@@ -1,4 +1,5 @@
 import pygame
+import os
 
 pygame.init()
 
@@ -13,6 +14,9 @@ pygame.display.set_caption('RPG Game')
 clock = pygame.time.Clock()
 FPS = 60
 
+#define game variables
+GRAVITY = 0.75
+
 
 
 #define player action variables
@@ -21,34 +25,41 @@ moving_right = False
 
 #define colors
 BG = (144, 201, 120)
+RED = (255,0,0)
 
 def draw_bg():
     screen.fill(BG)
+    pygame.draw.line(screen, RED, (0, 600), (screen_width, 600))
 
 class Soldier(pygame.sprite.Sprite):
     def __init__(self, char_type, x, y, scale, speed):
         pygame.sprite.Sprite. __init__(self)
+        self.alive = True
         self.char_type = char_type
         self.speed = speed
         self.direction = 1
+        self.vel_y = 0
+        self.jump = False
+        self.in_air = True
         self.flip = False
         self.animation_list = []
         self.frame_index = 0
         self.action = 0
         self.update_time = pygame.time.get_ticks()
-        temp_list = []
-        for i in range(5):
-            img = pygame.image.load(f"img/{self.char_type}/png/Idle/{i}.png.png")
-            img = pygame.transform.scale(img, (int(img.get_width() * scale), (int(img.get_height() * scale))))
-            temp_list.append(img)
-        self.animation_list.append(temp_list)
 
-        temp_list = []
-        for i in range(10):
-            img = pygame.image.load(f"img/{self.char_type}/png/Run/{i}.png.png")
-            img = pygame.transform.scale(img, (int(img.get_width() * scale), (int(img.get_height() * scale))))
-            temp_list.append(img)
-        self.animation_list.append(temp_list)
+        #load all images for players
+        animation_types = ['Idle', 'Run', 'Jump']
+        for animation in animation_types:
+            #reset temporary list of images
+            temp_list = []
+            #count number of files in folder
+            num_of_frames = len(os.listdir(f"img/{self.char_type}/png/{animation}"))
+            for i in range(num_of_frames):
+                img = pygame.image.load(f"img/{self.char_type}/png/{animation}/{i}.png.png")
+                img = pygame.transform.scale(img, (int(img.get_width() * scale), (int(img.get_height() * scale))))
+                temp_list.append(img)
+            self.animation_list.append(temp_list)
+
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -69,6 +80,23 @@ class Soldier(pygame.sprite.Sprite):
             dx = self.speed
             self.flip = False
             self.direction = 1
+        #jump
+        if self.jump == True and self.in_air == False:
+            self.vel_y = -11
+            self.jump = False
+            self.in_air = True
+
+        #apply gravity
+        self.vel_y += GRAVITY
+        if self.vel_y > 10:
+            self.vel_y
+        dy += self.vel_y
+
+        #check collision with floor
+        if self.rect.bottom + dy > 600:
+            dy = 600 - self.rect.bottom
+            self.in_air = False
+
 
         #update rectangle position
         self.rect.x += dx
@@ -118,10 +146,13 @@ while run:
     enemy.draw()
 
     #update to player actions
-    if moving_left or moving_right:
-        player.update_action(1)#1 means run
-    else:
-        player.update_action(0)
+    if player.alive:
+        if player.in_air:
+            player.update_action(2)#2: jump
+        elif moving_left or moving_right:
+            player.update_action(1)#1 means run
+        else:
+            player.update_action(0)
     player.move(moving_left, moving_right)
 
     for event in pygame.event.get():
@@ -136,6 +167,8 @@ while run:
                 moving_right = True
             if event.key == pygame.K_ESCAPE:
                 run = False
+            if event.key == pygame.K_SPACE and player.alive:
+                player.jump = True
 
 
         #keyboard button release
