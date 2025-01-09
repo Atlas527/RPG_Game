@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bc428221-d451-44b1-8415-8becf5d03d40" name="Changes" comment="Added Jump animation and in air">
+    <list default="true" id="bc428221-d451-44b1-8415-8becf5d03d40" name="Changes" comment="Added Shooting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rpggamemain.py" beforeDir="false" afterPath="$PROJECT_DIR$/rpggamemain.py" afterDir="false" />
     </list>
@@ -109,7 +109,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1735944131339</updated>
-      <workItem from="1735944132391" duration="29751000" />
+      <workItem from="1735944132391" duration="31480000" />
     </task>
     <task id="LOCAL-00001" summary="Player movement/enemy call.">
       <option name="closed" value="true" />
@@ -151,7 +151,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736292784418</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added Shooting">
+      <option name="closed" value="true" />
+      <created>1736384769174</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1736384769174</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,10 +192,11 @@
     <MESSAGE value="Player movement/enemy call." />
     <MESSAGE value="Running and Idle Animations" />
     <MESSAGE value="Added Jump animation and in air" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Jump animation and in air" />
+    <MESSAGE value="Added Shooting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Shooting" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject1$main.coverage" NAME="main Coverage Results" MODIFIED="1735946829822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PythonProject1$rpggamemain.coverage" NAME="rpggamemain Coverage Results" MODIFIED="1736383857094" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$rpggamemain.coverage" NAME="rpggamemain Coverage Results" MODIFIED="1736466238002" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

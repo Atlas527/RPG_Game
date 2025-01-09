@@ -37,11 +37,14 @@ def draw_bg():
     pygame.draw.line(screen, RED, (0, 600), (screen_width, 600))
 
 class Soldier(pygame.sprite.Sprite):
-    def __init__(self, char_type, x, y, scale, speed):
+    def __init__(self, char_type, x, y, scale, speed, ammo):
         pygame.sprite.Sprite. __init__(self)
         self.alive = True
         self.char_type = char_type
         self.speed = speed
+        self.ammo = ammo
+        self.start_ammo = ammo
+        self.shoot_cooldown = 0
         self.direction = 1
         self.vel_y = 0
         self.jump = False
@@ -68,6 +71,13 @@ class Soldier(pygame.sprite.Sprite):
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+
+    def update(self):
+        self.update_animation()
+        #update cooldown
+        if self.shoot_cooldown > 0:
+            self.shoot_cooldown -= 1
+
 
     def move(self, moving_left, moving_right):
         #reset movement variable
@@ -107,6 +117,13 @@ class Soldier(pygame.sprite.Sprite):
         self.rect.x += dx
         self.rect.y += dy
 
+    def shoot(self):
+        if self.shoot_cooldown == 0 and self.ammo >0:
+            self.shoot_cooldown = 20
+            bullet = Bullet(self.rect.centerx + (0.6 * self.rect.size[0] * self.direction), self.rect.centery,self.direction)
+            bullet_group.add(bullet)
+            #reduce ammo
+            self.ammo -= 1
 
     def update_animation(self):
         #update animation
@@ -151,13 +168,21 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.right < 0 or self.rect.left > screen_width:
             self.kill
 
+        #check collision with characters
+        if pygame.sprite.spritecollide(player, bullet_group, False):
+            if player.alive:
+                self.kill()
+        if pygame.sprite.spritecollide(enemy, bullet_group, False):
+            if player.alive:
+                self.kill()
+
 #create sprite groups
 bullet_group = pygame.sprite.Group()
 
 
 
-player = Soldier("player",200,200,1, 5)
-enemy = Soldier("enemy", 400, 200, 1, 5)
+player = Soldier("player",200,200,1, 5, 20)
+enemy = Soldier("enemy", 400, 200, 1, 5, 20)
 
 #event handler
 run = True
@@ -167,7 +192,7 @@ while run:
 
     draw_bg()
 
-    player.update_animation()
+    player.update()
     player.draw()
     enemy.draw()
 
@@ -179,8 +204,7 @@ while run:
     if player.alive:
         #shoot bullets
         if shoot:
-            bullet = Bullet(player.rect.centerx + (0.6 * player.rect.size[0] * player.direction), player.rect.centery, player.direction)
-            bullet_group.add(bullet)
+            player.shoot()
         if player.in_air:
             player.update_action(2)#2: jump
         elif moving_left or moving_right:
